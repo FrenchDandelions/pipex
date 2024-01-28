@@ -25,4 +25,5 @@ char	*get_path(char *cmd, char **env);
 int		ft_strcmp2(char *s1, char *s2);
 void	exit_error(char *str);
 void	exit_error_array(char *str, char **array);
+
 #endif

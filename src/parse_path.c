@@ -91,7 +91,9 @@ char	*get_path(char *cmd, char **env)
 			return (free(path), free_array(all_path), str);
 		i++;
 	}
-	free(path);
-	free_array(all_path);
+	if (ft_strcmp2(path, "0") == 1)
+		free(path);
+	if (all_path)
+		free_array(all_path);
 	return (cmd);
 }
