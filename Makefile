@@ -41,6 +41,6 @@ fclean: clean
 	@make fclean -sC $(LIB_DIR)
 	@echo "$(AZURE_BLUE)Deep Cleaning over ! :)$(RESET)"	
 
-re: fclean $(NAME)
+re: fclean lib $(NAME)
 
 .PHONY: all clean fclean re lib 
