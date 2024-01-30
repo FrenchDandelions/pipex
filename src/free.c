@@ -29,12 +29,12 @@ void	free_array(char **array)
 void	exit_error(char *str)
 {
 	ft_dprintf(2, "%s", str);
-	exit(0);
+	exit(1);
 }
 
 void	exit_error_array(char *str, char **array)
 {
 	ft_dprintf(2, "%s", str);
 	free_array(array);
-	exit(0);
+	exit(1);
 }

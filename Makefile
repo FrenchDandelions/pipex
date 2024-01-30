@@ -13,7 +13,7 @@ SRC_FILES = src/exec.c \
 			src/parse_path.c \
 			src/utils.c \
 
-OBJECTS = $(patsubst %.c, %.o, $(SRC_FILES))
+OBJECTS = $(SRC_FILES:.c=.o)
 INCLUDE = $(LIB_DIR)/libft.h ./src/pipex.h
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
@@ -21,24 +21,18 @@ CFLAGS = -Wall -Wextra -Werror -g3
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all: $(NAME) $(INCLUDE)
+all: lib $(NAME) $(INCLUDE)
 
-lib:
-	@if [ ! -f "$(LIB_FILE)" ]; then \
-		echo "$(GREEN)Compiling Libft...$(RESET)"; \
-		make -C $(LIB_DIR) ; \
-		make clean -sC $(LIB_DIR); \
-	fi
+lib: 
+	make -C $(LIB_DIR)
 
-$(NAME): lib $(OBJECTS) 
-	@echo "$(GOLD_COLOR)Compiling $@...$(RESET)"
+$(NAME): $(OBJECTS) 
 	$(CC) $(OBJECTS) $(LIB_FILE) -o $(NAME)
-	@echo "$(GOLD_COLOR)$@ compiled !$(RESET)"
-
 
 clean:
 	@echo "$(AZURE_BLUE)Cleaning in progress...$(RESET)"
 	@rm -f $(OBJECTS)
+	@make clean -sC $(LIB_DIR)
 	@echo "$(AZURE_BLUE)Cleanup done ! :)$(RESET)"
 
 fclean: clean

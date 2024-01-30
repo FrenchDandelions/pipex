@@ -12,22 +12,6 @@
 
 #include "pipex.h"
 
-int	open_file(char *str, int i)
-{
-	int	fd;
-
-	if (i == 0)
-		fd = open(str, O_RDONLY);
-	if (i == 1)
-		fd = open(str, O_CREAT | O_TRUNC | O_WRONLY, 0666);
-	if (fd == -1)
-	{
-		ft_dprintf(2, "fd\n");
-		exit(EXIT_FAILURE);
-	}
-	return (fd);
-}
-
 static char	*find_path(char **env, char *s)
 {
 	int		i;
@@ -43,9 +27,7 @@ static char	*find_path(char **env, char *s)
 	if (env[i] == NULL)
 		return ("0");
 	while (env[i][j] != '=')
-	{
 		j++;
-	}
 	path = (char *)malloc(sizeof(char) * (ft_strlen(env[i]) - j + 1));
 	while (env[i][j++] != '\0')
 	{
@@ -56,13 +38,17 @@ static char	*find_path(char **env, char *s)
 	return (path);
 }
 
-static char	*check_access(char *path, char *cmd)
+static char	*check_access(char *path, char *cmd, int *flag)
 {
 	char	*s1;
 	char	*s2;
 
 	s1 = ft_strjoin(path, "/");
+	if (!s1)
+		return (*flag = 1, NULL);
 	s2 = ft_strjoin(s1, cmd);
+	if (!s2)
+		return (free(s1), *flag = 1, NULL);
 	free(s1);
 	if (access(s2, F_OK | X_OK) == 0)
 		return (s2);
@@ -70,7 +56,21 @@ static char	*check_access(char *path, char *cmd)
 		return (free(s2), NULL);
 }
 
-char	*get_path(char *cmd, char **env)
+static void	check_all_path(char **all, int *flag)
+{
+	if (all == NULL)
+		*flag = 1;
+	return ;
+}
+
+static char	*last_check(char **all_path, char *cmd, int *flag)
+{
+	if (!all_path || *flag == 1)
+		return (NULL);
+	return (cmd);
+}
+
+char	*get_path(char *cmd, char **env, int *flag)
 {
 	char	*path;
 	char	**all_path;
@@ -83,10 +83,11 @@ char	*get_path(char *cmd, char **env)
 	if (!path)
 		return (NULL);
 	all_path = ft_split(path, ':');
+	check_all_path(all_path, flag);
 	i = 0;
-	while (all_path[i] != NULL)
+	while (all_path[i] != NULL && *flag == 0)
 	{
-		str = check_access(all_path[i], cmd);
+		str = check_access(all_path[i], cmd, flag);
 		if (str != NULL)
 			return (free(path), free_array(all_path), str);
 		i++;
@@ -95,5 +96,5 @@ char	*get_path(char *cmd, char **env)
 		free(path);
 	if (all_path)
 		free_array(all_path);
-	return (cmd);
+	return (last_check(all_path, cmd, flag));
 }

@@ -63,6 +63,5 @@ int	ft_dprintf(int fd, const char *str, ...)
 		}
 	}
 	va_end(args);
-	fsync(fd);
 	return (length);
 }

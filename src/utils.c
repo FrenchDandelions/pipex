@@ -25,3 +25,19 @@ int	ft_strcmp2(char *s1, char *s2)
 		return (0);
 	return (1);
 }
+
+int	open_file(char *str, int i)
+{
+	int	fd;
+
+	if (i == 0)
+		fd = open(str, O_RDONLY);
+	if (i == 1)
+		fd = open(str, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	if (fd == -1)
+	{
+		perror(str);
+		exit(1);
+	}
+	return (fd);
+}

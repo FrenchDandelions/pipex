@@ -17,13 +17,19 @@
 # include <errno.h>
 # include <sys/wait.h>
 
-void	free_array(char **array);
-void	exec(char *cmd, char **env);
-int		open_file(char *str, int i);
-void	fork_child(char *cmd, char **env);
-char	*get_path(char *cmd, char **env);
-int		ft_strcmp2(char *s1, char *s2);
-void	exit_error(char *str);
-void	exit_error_array(char *str, char **array);
+typedef struct s_pipe
+{
+	pid_t	pid;
+}			t_pipe;
+
+void		free_array(char **array);
+void		exec(char *cmd, char **env);
+int			open_file(char *str, int i);
+void		fork_child1(char *cmd, char **env, int *fds);
+char		*get_path(char *cmd, char **env, int *flag);
+int			ft_strcmp2(char *s1, char *s2);
+void		exit_error(char *str);
+void		exit_error_array(char *str, char **array);
+void		fork_child2(char *cmd, char **env, int *fds);
 
 #endif
