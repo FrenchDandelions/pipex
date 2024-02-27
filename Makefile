@@ -14,20 +14,17 @@ SRC_FILES = src/exec.c \
 			src/utils.c \
 
 OBJECTS = $(SRC_FILES:.c=.o)
-INCLUDE = $(LIB_DIR)/libft.h ./src/pipex.h
+INCLUDE = ./src/pipex.h
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -I -Ilibft
 
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+all: $(NAME)  
 
-all: lib $(NAME) $(INCLUDE)
-
-lib: 
+$(LIB_FILE): 
 	make -C $(LIB_DIR)
 
-$(NAME): $(OBJECTS) 
-	$(CC) $(OBJECTS) $(LIB_FILE) -o $(NAME)
+$(NAME) : $(LIB_FILE) ${OBJ} ./src/pipex.h Makefile
+	$(CC) $(CFLAGS) -o $(NAME) -g3 -Ilibft $(SRC_FILES) $(LIB_FILE)
 
 clean:
 	@echo "$(AZURE_BLUE)Cleaning in progress...$(RESET)"

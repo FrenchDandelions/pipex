@@ -24,7 +24,7 @@ typedef struct s_pipe
 
 void		free_array(char **array);
 void		exec(char *cmd, char **env);
-int			open_file(char *str, int i);
+int			open_file(char *str, int i, int *fds);
 void		fork_child1(char *cmd, char **env, int *fds, char *s);
 char		*get_path(char *cmd, char **env, int *flag);
 int			ft_strcmp2(char *s1, char *s2);

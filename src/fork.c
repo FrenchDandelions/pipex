@@ -22,7 +22,7 @@ void	fork_child1(char *cmd, char **env, int *fds, char *s)
 		exit_error("fork\n");
 	else if (pid == 0)
 	{
-		fd_in = open_file(s, 0);
+		fd_in = open_file(s, 0, fds);
 		dup2(fd_in, 0);
 		close(fd_in);
 		close(fds[0]);
@@ -49,7 +49,7 @@ void	fork_child2(char *cmd, char **env, int *fds, char *s)
 		exit_error("fork\n");
 	else if (pid == 0)
 	{
-		fd_out = open_file(s, 1);
+		fd_out = open_file(s, 1, fds);
 		dup2(fd_out, 1);
 		close(fd_out);
 		close(fds[0]);

@@ -26,7 +26,7 @@ int	ft_strcmp2(char *s1, char *s2)
 	return (1);
 }
 
-int	open_file(char *str, int i)
+int	open_file(char *str, int i, int *fds)
 {
 	int	fd;
 
@@ -37,6 +37,8 @@ int	open_file(char *str, int i)
 	if (fd == -1)
 	{
 		perror(str);
+		close(fds[0]);
+		close(fds[1]);
 		exit(1);
 	}
 	return (fd);
