@@ -27,15 +27,21 @@ int	wait_pid(int *fds)
 int	main(int argc, char **argv, char **env)
 {
 	int	fds[2];
+	int	i;
 
-	if (argc != 5)
+	i = 0;
+	if (argc < 5)
 		return (ft_dprintf(2, "Error, args should be: file1 cmd1 cmd2 file2\n"),
 			1);
 	if (!env[0])
 		return (0);
-	if (pipe(fds) == -1)
-		exit_error("pipe\n");
-	fork_child1(argv[2], env, fds, argv[1]);
+	while (i + 2 < argc - 2)
+	{
+		if (pipe(fds) == -1)
+			exit_error("pipe\n");
+		fork_child1(argv[i + 2], env, fds, argv[1], i);
+		i++;
+	}
 	if (pipe(fds) == -1)
 		exit_error("pipe\n");
 	fork_child2(argv[argc - 2], env, fds, argv[argc - 1]);

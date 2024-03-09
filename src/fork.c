@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	fork_child1(char *cmd, char **env, int *fds, char *s)
+void	fork_child1(char *cmd, char **env, int *fds, char *s, int i)
 {
 	pid_t	pid;
 	int		fd_in;
@@ -22,9 +22,13 @@ void	fork_child1(char *cmd, char **env, int *fds, char *s)
 		exit_error("fork\n");
 	else if (pid == 0)
 	{
-		fd_in = open_file(s, 0, fds);
-		dup2(fd_in, 0);
-		close(fd_in);
+		if (i == 0)
+		{
+			// ft_dprintf(2, "here\n");
+			fd_in = open_file(s, 0, fds);
+			dup2(fd_in, 0);
+			close(fd_in);
+		}
 		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[1]);
