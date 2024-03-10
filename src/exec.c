@@ -14,8 +14,12 @@
 
 static void	free_and_exit(char **env)
 {
+	int	errno_before;
+
+	errno_before = errno;
 	perror(env[0]);
 	free_array(env);
+	errno = errno_before;
 	exit(126);
 }
 
