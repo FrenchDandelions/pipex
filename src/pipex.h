@@ -19,13 +19,15 @@
 
 typedef struct s_pipe
 {
-	pid_t	pid;
+	char	*file_name;
+	int		i;
+	int		fd_in;
 }			t_pipe;
 
 void		free_array(char **array);
 void		exec(char *cmd, char **env);
 int			open_file(char *str, int i, int *fds);
-void		fork_child1(char *cmd, char **env, int *fds, char *s, int i);
+void		fork_child1(char *cmd, char **env, int *fds, t_pipe *pip);
 char		*get_path(char *cmd, char **env, int *flag);
 int			ft_strcmp2(char *s1, char *s2);
 void		exit_error(char *str);

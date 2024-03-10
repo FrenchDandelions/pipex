@@ -20,11 +20,14 @@ CFLAGS = -Wall -Wextra -Werror -g3 -I -Ilibft
 
 all: $(NAME)  
 
+.c.o :
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 $(LIB_FILE): 
 	make -C $(LIB_DIR)
 
-$(NAME) : $(LIB_FILE) ${OBJ} ./src/pipex.h Makefile
-	$(CC) $(CFLAGS) -o $(NAME) -g3 -Ilibft $(SRC_FILES) $(LIB_FILE)
+$(NAME) : $(LIB_FILE) $(OBJECTS) ./src/pipex.h Makefile
+	$(CC) $(CFLAGS) -o $(NAME) -g3 -Ilibft $(OBJECTS) $(LIB_FILE)
 
 clean:
 	@echo "$(AZURE_BLUE)Cleaning in progress...$(RESET)"

@@ -12,6 +12,13 @@
 
 #include "pipex.h"
 
+static void	free_and_exit(char **env)
+{
+	perror(env[0]);
+	free_array(env);
+	exit(126);
+}
+
 void	exec(char *cmd, char **env)
 {
 	char	*path;
@@ -32,6 +39,8 @@ void	exec(char *cmd, char **env)
 		exit_error_array("malloc\n", cmds);
 	if (execve(path, cmds, env) == -1)
 	{
+		if (errno == EACCES)
+			free_and_exit(cmds);
 		ft_dprintf(2, "%s: command not found\n", cmds[0]);
 		free_array(cmds);
 		exit(1);
