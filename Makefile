@@ -1,4 +1,5 @@
 NAME = pipex
+NAME_BONUS = pipex_bonus
 VERMILION_RED=\033[1;31m
 AZURE_BLUE=\033[1;34m
 GOLD_COLOR=\033[38;5;220m
@@ -12,6 +13,8 @@ SRC_FILES = src/exec.c \
 			src/main.c \
 			src/parse_path.c \
 			src/utils.c \
+			src/get_next_line.c \
+			src/heredoc.c \
 
 OBJECTS = $(SRC_FILES:.c=.o)
 INCLUDE = ./src/pipex.h
@@ -19,6 +22,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -I -Ilibft
 
 all: $(NAME)  
+
+bonus: $(NAME_BONUS)
 
 .c.o :
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -29,6 +34,9 @@ $(LIB_FILE):
 $(NAME) : $(LIB_FILE) $(OBJECTS) ./src/pipex.h Makefile
 	$(CC) $(CFLAGS) -o $(NAME) -g3 -Ilibft $(OBJECTS) $(LIB_FILE)
 
+$(NAME_BONUS) : $(LIB_FILE) $(OBJECTS) ./src/pipex.h Makefile
+	$(CC) $(CFLAGS) -o $(NAME_BONUS) -g3 -Ilibft $(OBJECTS) $(LIB_FILE)
+
 clean:
 	@echo "$(AZURE_BLUE)Cleaning in progress...$(RESET)"
 	@rm -f $(OBJECTS)
@@ -38,6 +46,7 @@ clean:
 fclean: clean
 	@echo "$(AZURE_BLUE)Deep cleaning in progress...$(RESET)"
 	@rm -f $(NAME)
+	@rm -f $(NAME_BONUS)
 	@make fclean -sC $(LIB_DIR)
 	@echo "$(AZURE_BLUE)Deep Cleaning over ! :)$(RESET)"	
 
