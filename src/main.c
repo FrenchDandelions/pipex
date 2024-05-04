@@ -49,7 +49,7 @@ int	init_pipex(t_pipe *p, int argc, char **argv, char **env)
 		ft_dprintf(2, "Error, args should be: file1 cmd1 cmd2 file2\n");
 		exit(1);
 	}
-	if (ft_strcmp("here_doc", argv[1]) == 0)
+	if (ft_strcmp("here_doc", argv[1]) == 0 && argc > 5)
 	{
 		if (pipe(p->heredoc_fd) == -1)
 			exit_error("pipe");
@@ -61,9 +61,12 @@ int	init_pipex(t_pipe *p, int argc, char **argv, char **env)
 	return (-1);
 }
 
-int	is_bonus_or_not(char *s, int argc)
+int	is_bonus_or_not(char *s, int argc, char **argv)
 {
 	if ((ft_strnstr(s, "_bonus", ft_strlen(s)) == 0 && argc > 5) || argc < 5)
+		return (ft_dprintf(2, "Error, args should be: file1 cmd1 cmd2 file2\n"),
+			1);
+	else if (ft_strcmp("here_doc", argv[1]) == 0 && argc <= 5)
 		return (ft_dprintf(2, "Error, args should be: file1 cmd1 cmd2 file2\n"),
 			1);
 	return (0);
@@ -75,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 	t_pipe	pip;
 
 	pip.i = 0;
-	if (is_bonus_or_not(argv[0], argc))
+	if (is_bonus_or_not(argv[0], argc, argv))
 		return (1);
 	if (!env[0])
 		return (0);
