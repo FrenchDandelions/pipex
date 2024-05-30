@@ -25,6 +25,7 @@ int	wait_pid(int *fds)
 int	new_pipes(int argc, char **argv, char **env, t_pipe *p)
 {
 	int	fds[2];
+	int	status;
 
 	p->is_heredoc = 1;
 	p->i++;
@@ -38,7 +39,8 @@ int	new_pipes(int argc, char **argv, char **env, t_pipe *p)
 	if (pipe(fds) == -1)
 		exit_error("pipe\n");
 	fork_child2(argv[argc - 2], env, fds, p);
-	return (wait_pid(fds));
+	status = wait_pid(fds);
+	return (close(p->heredoc_fd[0]), status);
 }
 
 int	init_pipex(t_pipe *p, int argc, char **argv, char **env)

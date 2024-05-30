@@ -14,28 +14,18 @@
 
 static char	*find_path(char **env, char *s)
 {
-	int		i;
-	char	*path;
-	int		k;
-	int		j;
+	int	i;
+	int	j;
 
-	k = 0;
 	i = 0;
 	while (ft_strcmp2(env[i], s) != 0 && env[i])
 		i++;
 	j = 0;
 	if (env[i] == NULL)
-		return ("0");
-	while (env[i][j] != '=')
+		return (ft_strdup("0"));
+	while (env[i][j] && env[i][j] != '=')
 		j++;
-	path = (char *)malloc(sizeof(char) * (ft_strlen(env[i]) - j + 1));
-	while (env[i][j++] != '\0')
-	{
-		path[k] = env[i][j];
-		k++;
-	}
-	path[k] = '\0';
-	return (path);
+	return (ft_strdup(env[i] + j + 1));
 }
 
 static char	*check_access(char *path, char *cmd, int *flag)
@@ -63,11 +53,15 @@ static void	check_all_path(char **all, int *flag)
 	return ;
 }
 
-static char	*last_check(char **all_path, char *cmd, int *flag)
+static char	*last_check(char **all_path, char *cmd, int *flag, char *path)
 {
+	if (ft_strcmp2(path, "0") == 1)
+		free(path);
+	if (all_path)
+		free_array(all_path);
 	if (!all_path || *flag == 1)
 		return (NULL);
-	return (cmd);
+	return (ft_strdup(cmd));
 }
 
 char	*get_path(char *cmd, char **env, int *flag)
@@ -78,7 +72,7 @@ char	*get_path(char *cmd, char **env, int *flag)
 	char	*str;
 
 	if (ft_strchr(cmd, '/'))
-		return (cmd);
+		return (ft_strdup(cmd));
 	path = find_path(env, "PATH=");
 	if (!path)
 		return (NULL);
@@ -89,12 +83,10 @@ char	*get_path(char *cmd, char **env, int *flag)
 	{
 		str = check_access(all_path[i], cmd, flag);
 		if (str != NULL)
-			return (free(path), free_array(all_path), str);
+			return (return_cmd(path, all_path, str));
 		i++;
 	}
-	if (ft_strcmp2(path, "0") == 1)
-		free(path);
-	if (all_path)
-		free_array(all_path);
-	return (last_check(all_path, cmd, flag));
+	if (all_path && !all_path[i])
+		return (not_found(cmd, all_path, path, &(*flag)));
+	return (last_check(all_path, cmd, flag, path));
 }

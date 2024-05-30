@@ -39,6 +39,8 @@ void	fork_child1(char *cmd, char **env, int *fds, t_pipe *pip)
 	{
 		if (pip->i == 0 || (pip->is_heredoc && pip->i == 1))
 			open_in(pip, fds);
+		else if (pip->is_heredoc)
+			close(pip->heredoc_fd[0]);
 		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[1]);
@@ -80,6 +82,8 @@ void	fork_child2(char *cmd, char **env, int *fds, t_pipe *p)
 	else if (pid == 0)
 	{
 		open_out(p, fds, &fd_out);
+		if (p->is_heredoc)
+			close(p->heredoc_fd[0]);
 		close(fds[0]);
 		close(fds[1]);
 		exec(cmd, env);

@@ -36,11 +36,13 @@ void		fork_child1(char *cmd, char **env, int *fds, t_pipe *pip);
 char		*get_path(char *cmd, char **env, int *flag);
 int			ft_strcmp2(char *s1, char *s2);
 void		exit_error(char *str);
-void		exit_error_array(char *str, char **array);
+void		exit_error_array(char *str, char *s1, char **cmds, int index);
 void		fork_child2(char *cmd, char **env, int *fds, t_pipe *pip);
 char		*get_next_line(int fd);
 int			ft_heredoc(char *lim, int fd);
 char		*ft_gnl_strchr(char *s, int c);
 size_t		ft_gnl_strlen(char *s);
+char		*return_cmd(char *path, char **all_path, char *str);
+char		*not_found(char *cmd, char **all_path, char *path, int *flag);
 
 #endif

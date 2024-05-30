@@ -32,9 +32,18 @@ void	exit_error(char *str)
 	exit(1);
 }
 
-void	exit_error_array(char *str, char **array)
+void	exit_error_array(char *str, char *s1, char **cmds, int index)
 {
-	ft_dprintf(2, "%s", str);
-	free_array(array);
-	exit(1);
+	if (index == 1 && !s1)
+		ft_putstr_fd(cmds[0], STDERR_FILENO);
+	else if (index == 1 && s1 && !s1[0])
+		ft_putstr_fd(s1, STDERR_FILENO);
+	ft_putendl_fd(str, STDERR_FILENO);
+	if (s1)
+		ft_memdel(s1);
+	if (cmds)
+		free_array(cmds);
+	if (index == 1)
+		exit(127);
+	exit(-2);
 }

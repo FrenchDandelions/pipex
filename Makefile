@@ -11,6 +11,7 @@ SRC_FILES = src/exec.c \
 			src/fork.c \
 			src/free.c \
 			src/main.c \
+			src/parse_path_utils.c \
 			src/parse_path.c \
 			src/utils.c \
 			src/get_next_line.c \
